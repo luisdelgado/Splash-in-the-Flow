@@ -30,7 +30,6 @@ wss.on('connection', function(ws) {
 			var optionsSelected = message.indexOf("options: "); 
 			user = message.slice(virgula+2, optionsSelected-2);
 			options = message.slice((optionsSelected+9), message.length);
-			console.log(options);
 			resposta = createNewUser();
 			readServer();
 			ws.send(resposta);
@@ -48,6 +47,11 @@ function verificationLogin() {
 
 
 	if (exist) {
+		var fs = require('fs');
+
+		fs.appendFile('./signed-in.js', ("user: '" + user + "'; "), function (err) {
+  			if (err) throw err;
+		});
 		return (user + " está conectado(a)!");
 	} else { 
 		return ("Esse usuário não está cadastrado(a) no sistema!");
@@ -58,7 +62,7 @@ function createNewUser() {
  	var fs = require('fs');
 
 	fs.appendFile('./server.js', ("name: '"+ name +"', user: '" + user + "', options: '" + options + "'; "), function (err) {
-  	if (err) throw err;
+  		if (err) throw err;
 	});
 
 	return (user + " foi cadastrado(a) no sistema!");
