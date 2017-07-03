@@ -52,9 +52,9 @@ function verificationLogin() {
 		fs.appendFile('./signed-in.js', ("user: '" + user + "'; "), function (err) {
   			if (err) throw err;
 		});
-		return (user + " está conectado(a)!");
+		return (user);
 	} else { 
-		return ("Esse usuário não está cadastrado(a) no sistema!");
+		return ("0");
 	}
 }
 

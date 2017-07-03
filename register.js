@@ -22,7 +22,9 @@ function login () {
 
 		var server_message = e.data;
 
-		console.log(server_message);
+		if (server_message != 0) {
+			location.href = "./Tela001.html";
+		}
 
 	}
 }
@@ -54,7 +56,7 @@ function register() {
 
 		var server_message = e.data;
 
-		console.log(server_message);
+		alert(server_message);
 
 	}
 }
