@@ -45,14 +45,19 @@ wss.on('connection', function(ws) {
 function verificationLogin() {
 	var exist = users.indexOf(user) !== -1;
 
-
 	if (exist) {
-		var fs = require('fs');
 
-		fs.appendFile('./signed-in.js', ("user: '" + user + "'; "), function (err) {
-  			if (err) throw err;
-		});
-		return (user);
+		var string = users,
+  		preString = user
+  		searchString = ";",
+  		preIndex = string.indexOf(preString),
+  		searchIndex = preIndex + string.substring(preIndex).indexOf(searchString);
+
+		var retorno = users.slice(preIndex, searchIndex);
+
+		console.log(retorno);
+
+		return (retorno);
 	} else { 
 		return ("0");
 	}
@@ -65,7 +70,11 @@ function createNewUser() {
   		if (err) throw err;
 	});
 
-	return (user + " foi cadastrado(a) no sistema!");
+	var retorno = (user + " foi cadastrado(a) no sistema!");
+
+	console.log(retorno)
+
+	return (retorno);
 }
 
 function readServer() {

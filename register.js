@@ -22,8 +22,13 @@ function login () {
 
 		var server_message = e.data;
 
+		console.log(server_message);
+
 		if (server_message != 0) {
-			location.href = "./Tela001.html";
+			var url = "./Tela001.html?user=" + server_message;
+			document.location.href = url;
+		} else {
+			alert("Esse usuário não está cadastrado no sistema!")
 		}
 
 	}
@@ -57,6 +62,8 @@ function register() {
 		var server_message = e.data;
 
 		alert(server_message);
+
+		location.href = "./index.html";
 
 	}
 }
