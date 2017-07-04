@@ -51,6 +51,7 @@ wss.on('connection', function(ws) {
 		id = Number(allOptions.slice((preIndex+11), (searchIndex)))+1;
 		console.log(id);
 
+		//Atualizando último id
 		newData = allOptions.slice(0, preIndex+11) + id +";";
 		console.log(newData);
 		updateData(newData);
