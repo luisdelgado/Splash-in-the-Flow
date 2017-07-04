@@ -27,7 +27,7 @@ function chat() {
 			topic = node;
 		}
 
-		var toSend = ("title: '" + title + "', topic: '" + topic + "' user: '" + userToSend + "';");
+		var toSend = ("'" + title + "', topic: '" + topic + "' user: '" + userToSend + "';");
 		connection.send(toSend);
 
 		connection.onclose = function(){
@@ -37,8 +37,8 @@ function chat() {
 		connection.onmessage = function(e){
 			var server_message = e.data;
 			console.log(server_message);
-			//var url = "./tela003.html?user=" + toSend;
-			//document.location.href = url;
+			var url = "./tela003.html?title=" + toSend;
+			document.location.href = url;
 		}
 
 	}
