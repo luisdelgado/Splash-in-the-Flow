@@ -2,7 +2,9 @@ var WebSocketServer = require('ws').Server;
 var allOptions;
 var title;
 var topic;
+var id;
 var user;
+var newData;
 readServer();
 
 wss = new WebSocketServer({port: 9000, path: '/newDiscussion'});
@@ -39,6 +41,20 @@ wss.on('connection', function(ws) {
   		searchIndex = preIndex + string.substring(preIndex).indexOf(searchString);
 		user = message.slice((preIndex+7), (searchIndex));
 		console.log(user);
+
+		//Pegando o último id
+		var string = allOptions,
+  		preString = "contador = "
+  		searchString = ";",
+  		preIndex = string.indexOf(preString),
+  		searchIndex = preIndex + string.substring(preIndex).indexOf(searchString);
+		id = Number(allOptions.slice((preIndex+11), (searchIndex)))+1;
+		console.log(id);
+
+		newData = allOptions.slice(0, preIndex+11) + id +";";
+		console.log(newData);
+		updateData(newData);
+
 		ws.send("Chegou!");
 
 	});
@@ -55,4 +71,18 @@ function readServer() {
   	}
   	allOptions = data;
 	});
+}
+
+function updateData(newData) {
+	//Apagando tudo
+	var fs = require('fs')
+	fs.writeFile('./serverDiscussion.js', '', function(){console.log('done')});
+
+	//Escrevendo atualizado
+	fs.appendFile('./serverDiscussion.js', newData, function (err) {
+  		if (err) throw err;
+	});
+
+	//Atualizando leitura
+	readServer();
 }
