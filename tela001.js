@@ -70,7 +70,7 @@ function verificationOptions(option) {
 }
 
 function createDiscussion() {
-	var url = "./index.html";
+	var url = "./Tela002.html?user=" + user;
 	document.location.href = url;
 }
 

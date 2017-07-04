@@ -1,1 +1,1 @@
-var users = [{name: 'Luís Henrique Delgado Santos', user: 'lhds', options: 'Java,Python,CSS3,Node.js,Android'; 
+var users = [{name: 'Luís Henrique Delgado Santos', user: 'lhds', options: 'Java,Python,CSS3,Node.js,Android'; name: '', user: 'whats ', options: 'er, whats up?'; 
