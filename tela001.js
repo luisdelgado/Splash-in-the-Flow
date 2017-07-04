@@ -52,9 +52,40 @@ function verificationOptions(option) {
 		}
 
 		connection.onmessage = function(e){
-		var server_message = e.data;
-		document.getElementById('here').appendChild(document.createTextNode(server_message));
-		document.getElementById('here').appendChild(document.createElement("br"));
+			var server_message = e.data;
+			var length = verificarDiscussoes(server_message);
+
+			if (length > 1) {
+				var createAText = document.createTextNode(server_message);
+				var newlink = document.createElement("a");
+				newlink.setAttribute('href', './index.html');
+				newlink.appendChild(createAText);
+				var div = document.getElementById('here');
+				div.appendChild(newlink);
+				document.getElementById('here').appendChild(document.createElement("br"));
+
+			}
 		}
 	}
+}
+
+function createDiscussion() {
+	var url = "./index.html";
+	document.location.href = url;
+}
+
+function verificarDiscussoes(server_message) {
+	var resposta;
+
+	var string = server_message,
+  		preString = ("'"),
+  		searchString = " '",
+  		preIndex = string.indexOf(preString),
+  		searchIndex = preIndex + string.substring(preIndex).indexOf(searchString);
+
+		var retorno = server_message.slice(preIndex, searchIndex);
+
+		resposta = retorno.length;
+
+	return resposta;
 }
