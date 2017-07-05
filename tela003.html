@@ -1,13 +1,79 @@
-<!DOCTYPE html>
 <html>
     <head>
-    	<meta charset="utf-8">
         <title>Splash in the Flow</title>
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
+        <!-- Latest compiled and minified CSS -->
+        <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" rel="stylesheet" />
+        <!-- Optional theme -->
+        <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" rel="stylesheet" />
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <!-- Latest compiled and minified JavaScript --><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Custom styles for this template -->
+        <link href="http://getbootstrap.com/examples/sticky-footer/sticky-footer.css" rel="stylesheet" />
+        <style type="text/css">
+.input-name {
+     width: 20%; height: 30px; margin-top: 16px; background: #f5f5f5; border: 1px solid #ccc; float:left;
+ }
+ .input-msg {
+     width: 80%; height: 30px; margin-top: 16px; background: #f5f5f5; border: 1px solid #ccc; float:left;
+ }
+ .text {
+    height: 300px;
+    border: 1px solid #ccc;
+    margin-bottom: 20px;
+    overflow: scroll;
+ }      </style>
         <script type="text/javascript" src="tela003.js"></script>
+        <script language="javascript">
+    var connection = new WebSocket('ws://localhost:8081/testing');
+
+    connection.onopen = function() {
+
+        console.log('Connection open!');
+
+    }
+
+    connection.onclose = function() {
+
+        console.log('Connection closed');
+
+    }
+
+    connection.onmessage = function(e) {
+
+        var server_message = e.data;
+
+        document.getElementById("result").innerHTML += server_message + "<br>";
+
+    }
+    
+    function send(){
+        var name = document.getElementById("name-text").value;
+        var msg = document.getElementById("msg-text").value;
+        connection.send('['+name+'] ' + msg);
+        document.getElementById("msg-text").value = '';
+        
+        //document.getElementById("result").innerHTML += msg + "<br>";
+    }
+</script>
     </head>
     <body>
-        <div align=center>
-            <h1>Splash in the Flow</h1>
+        <!-- Begin page content -->
+        <div class="container">
+            <div class="page-header" align="center">
+                <h1>Splash in the Flow</h1>
+            </div>
+            <div class="text" id="result">
+                &nbsp;</div>
         </div>
+        <footer class="footer">
+            <div class="container">
+                <input class="input-name" id="name-text" type="text" />
+                <form action="javascript:;" onsubmit="send(this)">
+                    <input autocomplete="off" class="input-msg" id="msg-text" onsubmit="send(this)" type="text" />&nbsp;</form>
+            </div>
+        </footer>
+        <p>
+            &nbsp;</p>
     </body>
-</html> 
+</html>
