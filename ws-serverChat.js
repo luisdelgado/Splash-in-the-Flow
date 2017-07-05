@@ -8,6 +8,7 @@ wss = new WebSocketServer({
 var clients = {};
 
 var id = 0;
+var serverRead;
 
 wss.on('connection', function(ws) {
     ws.id = id++;
@@ -39,8 +40,6 @@ var send = function(id, message){
 
 
 var http = require("http");
-
-var serverRead;
 
 http.createServer(function(req, res) {
 

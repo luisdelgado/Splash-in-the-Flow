@@ -13,50 +13,48 @@ wss.on('connection', function(ws) {
 
 	ws.on('message', function(message) {
 
+		readServer();
 		console.log('Msg received in server: %s ', message);
 
 		//Pegando título
-		var string = message,
-  		preString = "'"
-  		searchString = "'",
-  		preIndex = string.indexOf(preString)+1,
-  		searchIndex = preIndex + string.substring(preIndex).indexOf(searchString);
+		var string = message;
+  		var preString = "'";
+  		var searchString = "'";
+  		var preIndex = string.indexOf(preString)+1;
+  		var searchIndex = preIndex + string.substring(preIndex).indexOf(searchString);
 		title = message.slice((preIndex), (searchIndex));
-		console.log(title);
 
 		//Pegando tópico
-		var string = message,
-  		preString = "topic: '"
-  		searchString = "'",
-  		preIndex = string.indexOf(preString),
+		string = message;
+  		preString = "topic: '";
+  		searchString = "'";
+  		preIndex = string.indexOf(preString);
   		searchIndex = preIndex + 7 + string.substring(preIndex).indexOf(searchString);
 		topic = message.slice((preIndex+8), (searchIndex-2));
-		console.log(topic);
 
 		//Pegando usuário
-		var string = message,
-  		preString = "user: '"
+		string = message,
+  		preString = "user: '";
   		searchString = "%",
-  		preIndex = string.indexOf(preString),
+  		preIndex = string.indexOf(preString);
   		searchIndex = preIndex + string.substring(preIndex).indexOf(searchString);
 		user = message.slice((preIndex+7), (searchIndex));
-		console.log(user);
 
 		//Pegando o último id
-		var string = allOptions,
-  		preString = "contador = "
-  		searchString = ";",
-  		preIndex = string.indexOf(preString),
+		string = allOptions;
+  		preString = "contador = ";
+  		searchString = ";";
+  		preIndex = string.indexOf(preString);
   		searchIndex = preIndex + string.substring(preIndex).indexOf(searchString);
-		id = Number(allOptions.slice((preIndex+11), (searchIndex)))+1;
-		console.log(id);
-
-		//Atualizando último id
-		newData = allOptions.slice(0, preIndex+11) + id +";";
-		console.log(newData);
-		updateData(newData);
-
-		ws.send("Chegou!");
+		id = (Number(allOptions.slice((preIndex+11), (searchIndex))))+1;
+		if (id==1) {
+			ws.send("erro");
+		} else {
+			//Atualizando último id
+			newData = allOptions.slice(0, preIndex+11) + id +";";
+			updateData(newData);
+			ws.send("certo");
+		}
 
 	});
 
@@ -68,9 +66,10 @@ function readServer() {
 	fs = require('fs');
 	fs.readFile('./serverDiscussion.js', 'utf8', function (err,data) {
   	if (err) {
-    	allOptions = err;
+  		throw err;
+  	} else {	
+  		allOptions = data;
   	}
-  	allOptions = data;
 	});
 }
 
