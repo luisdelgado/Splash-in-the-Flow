@@ -37,7 +37,7 @@ function chat() {
 		connection.onmessage = function(e){
 			var server_message = e.data;
 			if (server_message != "erro") {
-				var url = "./tela003.html?title=" + toSend;
+				var url = "./tela003.html?title=" + toSend + id + "-";
 				document.location.href = url;
 			} else {
 				alert("O servidor está sobrecarregado! Tente novamente mais tarde.");

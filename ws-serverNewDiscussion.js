@@ -52,8 +52,18 @@ wss.on('connection', function(ws) {
 		} else {
 			//Atualizando último id
 			newData = allOptions.slice(0, preIndex+11) + id +";";
+			allOptions = newData;
+
+			//Salvando nova discussão no servidor
+			//Pegando tópico
+			string = allOptions;
+  			preString = topic;
+  			searchString = "'";
+  			preIndex = string.indexOf(preString);
+  			searchIndex2 = preIndex + string.substring(preIndex).indexOf(searchString);
+			newData = allOptions.slice(0, searchIndex2+1) + "id: '" + id + "' title: '" + title + "', " + allOptions.slice(searchIndex2+1, searchIndex+1);
 			updateData(newData);
-			ws.send("certo");
+			ws.send(id);
 		}
 
 	});
@@ -82,7 +92,4 @@ function updateData(newData) {
 	fs.appendFile('./serverDiscussion.js', newData, function (err) {
   		if (err) throw err;
 	});
-
-	//Atualizando leitura
-	readServer();
 }

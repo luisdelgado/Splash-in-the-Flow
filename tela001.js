@@ -5,6 +5,7 @@ var CSS3;
 var node;
 var Android;
 var Swift;
+var toSend;
 
 window.onload = function () {
     var url = document.location.href,
@@ -56,14 +57,9 @@ function verificationOptions(option) {
 			var length = verificarDiscussoes(server_message);
 
 			if (length > 1) {
-				var createAText = document.createTextNode(server_message);
-				var newlink = document.createElement("a");
-				newlink.setAttribute('href', './index.html');
-				newlink.appendChild(createAText);
-				var div = document.getElementById('here');
-				div.appendChild(newlink);
-				document.getElementById('here').appendChild(document.createElement("br"));
 
+				//Tratando resposta
+				var toSend = tratandoResposta(server_message);
 			}
 		}
 	}
@@ -88,4 +84,52 @@ function verificarDiscussoes(server_message) {
 		resposta = retorno.length;
 
 	return resposta;
+}
+
+function tratandoResposta (server_message) {
+	
+	server_message = server_message+";";
+	var atualString = server_message;
+
+	//Pegando tópico
+	var topic = atualString.slice(0, atualString.indexOf(" ="));
+
+	//Pegando user
+	userToSend = user.slice(0, user.indexOf("%"));
+
+	var toSend = "";
+	var fim = "  ';";
+
+	while (atualString != fim) {
+		//Pegando título
+		var string = atualString;
+  		var preString = "title: '";
+  		var searchString = "'";
+  		var preIndex = string.indexOf(preString);
+  		var searchIndex = preIndex + 7 + string.substring(preIndex).indexOf(searchString);
+		var title = atualString.slice(preIndex+8, searchIndex-1);
+
+		//Pegando id
+		string = atualString;
+  		preString = "id: '";
+  		searchString = "'";
+  		preIndex = string.indexOf(preString);
+  		searchIndex = preIndex + 4 + string.substring(preIndex).indexOf(searchString);
+		var id = atualString.slice(preIndex+5, searchIndex-2);
+
+		toSend = ("'" + title + "', topic: '" + topic + "' user: '" + userToSend + "';");
+
+		var createAText = document.createTextNode(topic + " - " + title);
+		var newlink = document.createElement("a");
+		newlink.setAttribute('href', './tela003.html?title=' + toSend + id + '-');
+		newlink.appendChild(createAText);
+		var div = document.getElementById('here');
+		div.appendChild(newlink);
+		document.getElementById('here').appendChild(document.createElement("br"));
+
+		preIndex = atualString.indexOf(",");
+		finalIndex = atualString.indexOf(";");
+		atualString = atualString.substring(preIndex+1, finalIndex+1);
+	}
+	return ("oi");
 }
