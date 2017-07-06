@@ -33,8 +33,11 @@ var send = function(id, message){
         var client = clients[key];
         client.send(message);
     });
+
+    if (serverRead != undefined) {
     
-    serverRead.write("data: " + message + "\n\n");
+        serverRead.write("data: " + message + "\n\n");
+    }
 
 }
 
