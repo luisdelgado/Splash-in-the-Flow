@@ -106,8 +106,10 @@ function tratandoResposta (server_message) {
   		var preString = "title: '";
   		var searchString = "'";
   		var preIndex = string.indexOf(preString);
-  		var searchIndex = preIndex + 7 + string.substring(preIndex).indexOf(searchString);
-		var title = atualString.slice(preIndex+8, searchIndex-1);
+  		var finalIndex = atualString.indexOf(";");
+  		var string2 = string.substring(preIndex+8, finalIndex);
+  		var searchIndex = string2.indexOf(searchString);
+		var title = string2.slice(0, searchIndex);
 
 		//Pegando id
 		string = atualString;

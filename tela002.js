@@ -24,7 +24,7 @@ function chat() {
 		console.log('Connection open!');
 
 		if (topic.indexOf("Node.js") != -1) {
-			topic = node;
+			topic = "node";
 		}
 
 		var toSend = ("'" + title + "', topic: '" + topic + "' user: '" + userToSend + "';");
@@ -37,7 +37,7 @@ function chat() {
 		connection.onmessage = function(e){
 			var server_message = e.data;
 			if (server_message != "erro") {
-				var url = "./tela003.html?title=" + toSend + id + "-";
+				var url = "./tela003.html?title=" + toSend + server_message + "-";
 				document.location.href = url;
 			} else {
 				alert("O servidor está sobrecarregado! Tente novamente mais tarde.");

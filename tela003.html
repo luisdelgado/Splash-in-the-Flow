@@ -43,14 +43,34 @@
 
         var server_message = e.data;
 
-        document.getElementById("result").innerHTML += server_message + "<br>";
+        //Verificando ids
+        string = server_message,
+        preString = "id";
+        searchString = "-",
+        preIndex = string.indexOf(preString);
+        searchIndex = preIndex + string.substring(preIndex).indexOf(searchString);
+        idN = server_message.slice((preIndex+2), (searchIndex));
+        server_message = server_message.substring(0, preIndex-1);
 
+       if (idN == idC) {
+            document.getElementById("result").innerHTML += server_message + "<br>";
+       }
+        
     }
     
     function send(){
         var name = document.getElementById("name-text").value;
         var msg = document.getElementById("msg-text").value;
-        connection.send('['+name+'] ' + msg);
+
+        //Pegando id da conversa
+        string = title,
+        preString = ";";
+        searchString = "-",
+        preIndex = string.indexOf(preString);
+        searchIndex = preIndex + string.substring(preIndex).indexOf(searchString);
+        idC = title.slice((preIndex+1), (searchIndex));
+        
+        connection.send('['+name+'] ' + msg + " id" + idC + "-");
         document.getElementById("msg-text").value = '';
         
         //document.getElementById("result").innerHTML += msg + "<br>";
@@ -62,6 +82,8 @@
         <div class="container">
             <div class="page-header" align="center">
                 <h1>Splash in the Flow</h1>
+                <h2 id="titulo"></h2>
+                <h3 id="topico"></h3>
             </div>
             <div class="text" id="result">
                 &nbsp;</div>
