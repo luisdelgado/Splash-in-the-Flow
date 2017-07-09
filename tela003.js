@@ -50,3 +50,62 @@ window.onload = function () {
 
 	document.getElementById("name-text").value = user;
 }
+
+var connection = new WebSocket('ws://localhost:8081/testing');
+
+    connection.onopen = function() {
+
+        console.log('Connection open!');
+
+    }
+
+    connection.onclose = function() {
+
+        console.log('Connection closed');
+
+    }
+
+    connection.onmessage = function(e) {
+
+        var server_message = e.data;
+
+        //Verificando ids
+        string = server_message,
+        preString = "id";
+        searchString = "-",
+        preIndex = string.indexOf(preString);
+        searchIndex = preIndex + string.substring(preIndex).indexOf(searchString);
+        idN = server_message.slice((preIndex+2), (searchIndex));
+        server_message = server_message.substring(0, preIndex-1);
+
+       if (idN == idC) {
+            document.getElementById("result").innerHTML += server_message + "<br>";
+       }
+        
+    }
+    
+    function send(){
+        var name = document.getElementById("name-text").value;
+        var msg = document.getElementById("msg-text").value;
+
+        //Pegando id da conversa
+        string = title,
+        preString = ";";
+        searchString = "-",
+        preIndex = string.indexOf(preString);
+        searchIndex = preIndex + string.substring(preIndex).indexOf(searchString);
+        idC = title.slice((preIndex+1), (searchIndex));
+        
+        connection.send('['+name+'] ' + msg + " id" + idC + "-");
+        document.getElementById("msg-text").value = '';
+        
+        //document.getElementById("result").innerHTML += msg + "<br>";
+    }
+
+var source = new EventSource("http://localhost:9091");
+
+    source.onmessage = function(event) {
+
+        document.getElementById("discussion").innerHTML = event.data;
+
+    };

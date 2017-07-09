@@ -53,6 +53,18 @@ http.createServer(function(req, res) {
         "Access-Control-Allow-Origin": "*"
     });
     
-    serverRead = res;
+    var interval = setInterval( function() {
+
+        res.write("data: " + randomInt(100,127) + "\n\n");
+
+    },2000);
 
 }).listen(9091);
+
+console.log('SSE-Server started!');
+
+function randomInt (low, high) {
+
+return Math.floor(Math.random() * (high - low) + low);
+
+}
