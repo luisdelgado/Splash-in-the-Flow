@@ -1,1 +1,1 @@
-var users = [{name: 'Luís Henrique Delgado Santos', user: 'lhds', options: 'Java,Python'; 
+var users = [{

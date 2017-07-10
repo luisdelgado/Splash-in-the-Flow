@@ -6,6 +6,7 @@ var node;
 var Android;
 var Swift;
 var toSend;
+var options = "";
 
 window.onload = function () {
     var url = document.location.href,
@@ -62,6 +63,7 @@ function verificationOptions(option) {
 				var toSend = tratandoResposta(server_message);
 			}
 		}
+		options = options + option + ", ";
 	}
 }
 
@@ -119,11 +121,13 @@ function tratandoResposta (server_message) {
   		searchIndex = preIndex + 4 + string.substring(preIndex).indexOf(searchString);
 		var id = atualString.slice(preIndex+5, searchIndex-2);
 
+
+
 		toSend = ("'" + title + "', topic: '" + topic + "' user: '" + userToSend + "';");
 
 		var createAText = document.createTextNode(topic + " - " + title);
 		var newlink = document.createElement("a");
-		newlink.setAttribute('href', './tela003.html?title=' + toSend + id + '-');
+		newlink.setAttribute('href', './tela003.html?title=' + toSend + id + '-' + options + '[');
 		newlink.appendChild(createAText);
 		var div = document.getElementById('here');
 		div.appendChild(newlink);

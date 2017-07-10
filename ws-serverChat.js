@@ -1,3 +1,9 @@
+var allOptions;
+var users;
+var user;
+var idMax;
+var resposta = "certo";
+
 var WebSocketServer = require('ws').Server;
 
 wss = new WebSocketServer({
@@ -12,6 +18,8 @@ var serverRead;
 
 wss.on('connection', function(ws) {
     ws.id = id++;
+
+    idMax = id;
     
     clients[id] = ws;
 
@@ -20,23 +28,42 @@ wss.on('connection', function(ws) {
     });
     
     ws.on('close', function(reasonCode, description) {
-        delete clients[id];
+        //delete clients[id];
     });
     
     console.log('new connection');
-
 });
 
 
 var send = function(id, message){
+    
     Object.keys(clients).forEach(function(key) {
-        var client = clients[key];
-        client.send(message);
+            var client = clients[key];
+            client.send(message, function(error){
+                if (error) {
+                    console.log("erro");
+                    resposta = "erro";
+                }
+            });
     });
 
-    if (serverRead != undefined) {
+    console.log(resposta);
+
+    if (resposta == "erro") {
+
+        if (serverRead != undefined) {
     
-        serverRead.write("data: " + message + "\n\n");
+            serverRead.write("data: erro" + "\n\n");
+        }
+
+        resposta = "certo";
+
+    } else {
+
+        if (serverRead != undefined) {
+    
+            serverRead.write("data: " + message + "\n\n");
+        }
     }
 
 }
@@ -55,9 +82,11 @@ http.createServer(function(req, res) {
     
     var interval = setInterval( function() {
 
-        res.write("data: " + randomInt(100,127) + "\n\n");
+        allOptions = readServer();
 
-    },2000);
+        res.write("data: " + allOptions + "\n\n");
+
+    },5000);
 
 }).listen(9091);
 
@@ -67,4 +96,38 @@ function randomInt (low, high) {
 
 return Math.floor(Math.random() * (high - low) + low);
 
+}
+
+function readServer() {
+    fs = require('fs');
+    fs.readFile('./serverDiscussion.js', 'utf8', function (err,data) {
+    if (err) {
+        throw err;
+    } else {
+        allOptions = data;
+    }
+    });
+    fs.readFile('./server.js', 'utf8', function (err,data) {
+    if (err) {
+        throw err;
+    }
+    users = data;
+    });
+    if (allOptions != undefined) {
+        var final = 0;
+        var atual;
+        var preString;
+        var posString;
+        for (contador = 0; final < 6; contador++) {
+            atual = allOptions.substring(contador,contador+1);
+            if (atual == ";" ) {
+                final++;
+                preString = allOptions.substring(0,contador+1);
+                atual = "+";
+                posString = allOptions.substring(contador+3, allOptions.length);
+                allOptions = preString + atual + posString;
+            }
+        }
+    }
+    return allOptions;
 }
