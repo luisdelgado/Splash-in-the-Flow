@@ -62,6 +62,14 @@ window.onload = function () {
 	user = string2.slice(0, searchIndex);
 
 	document.getElementById("name-text").value = user;
+
+    //Pegando id da conversa
+    string = title,
+    preString = ";";
+    searchString = "-",
+    preIndex = string.indexOf(preString);
+    searchIndex = preIndex + string.substring(preIndex).indexOf(searchString);
+    idC = title.slice((preIndex+1), (searchIndex));
 }
 
 var connection = new WebSocket('ws://localhost:8081/testing');
@@ -70,40 +78,79 @@ var connection = new WebSocket('ws://localhost:8081/testing');
 
         console.log('Connection open!');
 
+        var otherTalk = title.indexOf("exit") !== -1;
+        
+        if (otherTalk) {
+
+        	var idCOld = title.substring(title.indexOf("[")+6, title.indexOf("]"));
+        	connection.send("exitOther: " + user + "-" + idCOld);
+        }
+
+        connection.send("user: " + user + "-" + idC);
+
     }
 
     connection.onclose = function() {
 
-    	alert("Ocorreu um erro de connexão. Por favor, se conecte novamente.");
-        console.log('Connection closed');
-        var url = "./index.html";
-		document.location.href = url;
+    	connection.send("exit: " + user + "-" + idC);
 
     }
 
     connection.onmessage = function(e) {
 
         var server_message = e.data;
-        console.log(server_message);
 
-        if (server_message.length < 2 || server_message == "erro") {
-        	alert("Ocorreu um erro de connexão. Por favor, se conecte novamente.");
+        if (server_message == "deleted") {
+        	console.log('Connection closed');
         	var url = "./index.html";
 			document.location.href = url;
         }
 
-        //Verificando ids
-        string = server_message,
-        preString = "id";
-        searchString = "-",
-        preIndex = string.indexOf(preString);
-        searchIndex = preIndex + string.substring(preIndex).indexOf(searchString);
-        idN = server_message.slice((preIndex+2), (searchIndex));
-        server_message = server_message.substring(0, preIndex-1);
+        if (server_message == "lastOld") {
+        	var exit = window.confirm("Você é o último integrante dessa discussão. Se você sair, ela será excluída. Deseja realmente sair?");
+        	if (exit) {
+        	
+        	} else {
+        		connection.send("exitErro: " + user + "-" + idC);
+        		window.history.back();
+        	}
+        }
 
-       if (idN == idC) {
-            document.getElementById("result").innerHTML += server_message + "<br>";
-       }
+        if (server_message == "last") {
+
+        	var exit = window.confirm("Você é o último integrante dessa discussão. Se você sair, ela será excluída. Deseja realmente sair?");
+        	if (exit) {
+        		console.log('Connection closed');
+        		var url = "./index.html";
+				document.location.href = url;
+        	} else {
+        		connection.send("user: " + user + "-" + idC);
+        	}
+
+        } else {
+
+        	console.log(server_message);
+
+        	if (server_message.length < 2 || server_message == "erro") {
+        		alert("Ocorreu um erro de connexão. Por favor, se conecte novamente.");
+        		var url = "./index.html";
+				document.location.href = url;
+        	}
+
+        	//Verificando ids
+        	string = server_message,
+        	preString = "id";
+        	searchString = "-",
+        	preIndex = string.indexOf(preString);
+        	searchIndex = preIndex + string.substring(preIndex).indexOf(searchString);
+        	idN = server_message.slice((preIndex+2), (searchIndex));
+        	server_message = server_message.substring(0, preIndex-1);
+
+       		if (idN == idC) {
+            	document.getElementById("result").innerHTML += server_message + "<br>";
+       		}
+
+   		}
         
     }
     
@@ -118,12 +165,10 @@ var connection = new WebSocket('ws://localhost:8081/testing');
         preIndex = string.indexOf(preString);
         searchIndex = preIndex + string.substring(preIndex).indexOf(searchString);
         idC = title.slice((preIndex+1), (searchIndex));
-        console.log(idC);
-        
+
         connection.send('['+name+'] ' + msg + " id" + idC + "-");
         document.getElementById("msg-text").value = '';
         
-        //document.getElementById("result").innerHTML += msg + "<br>";
     }
 
 var source = new EventSource("http://localhost:9091");
@@ -277,7 +322,7 @@ var source = new EventSource("http://localhost:9091");
 
             var createAText = document.createTextNode(topic + " - " + title);
             var newlink = document.createElement("a");
-            newlink.setAttribute('href', './tela003.html?title=' + toSend + id + '-' + options + '[');
+            newlink.setAttribute('href', './tela003.html?title=' + toSend + id + '-' + options + '[exit:'+idC+ "]");
             newlink.appendChild(createAText);
             var div = document.getElementById('discussion');
             div.appendChild(newlink);
@@ -289,3 +334,7 @@ var source = new EventSource("http://localhost:9091");
         }
         return ("oi");
     }
+
+function exit() {
+	connection.send("exit: " + user + "-" + idC);
+}

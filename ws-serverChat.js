@@ -3,6 +3,7 @@ var users;
 var user;
 var idMax;
 var resposta = "certo";
+var connected = "";
 
 var WebSocketServer = require('ws').Server;
 
@@ -24,11 +25,54 @@ wss.on('connection', function(ws) {
     clients[id] = ws;
 
     ws.on('message', function(message) {
-        send(id, message);
+        var exist = message.indexOf("user") !== -1;
+        var delet = message.indexOf("exit") !== -1;
+        var deletOlder = message.indexOf("exitOther") !== -1;
+        var deletErro = message.indexOf("exitErro") !== -1;
+
+        if (delet) {
+            var preIndex = message.indexOf("-");
+            var fimIndex = message.length;
+            var id = message.substring(preIndex+1, fimIndex);
+            connected = connected.replace(message.substring(6, message.length) + ", ", '');
+            var isId = connected.indexOf(id) !== -1;
+            if (isId) {
+                ws.send("deleted");
+            } else {
+                ws.send("last");
+            }
+        }
+        if (deletOlder) {
+            var preIndex = message.indexOf("-");
+            var fimIndex = message.length;
+            var id = message.substring(preIndex+1, fimIndex);
+            connected = connected.replace(message.substring(11, message.length) + ", ", '');
+            var isId = connected.indexOf(id) !== -1;
+            if (isId) {
+            } else {
+                ws.send("lastOld");
+            }
+        }
+        if (deletErro) {
+            var preIndex = message.indexOf("-");
+            var fimIndex = message.length;
+            var id = message.substring(preIndex+1, fimIndex);
+            connected = connected.replace(message.substring(6, message.length) + ", ", '');
+        }
+        if (exist) {
+            connected = connected + message.substring(6, message.length) + ", ";
+        } else {
+            var delet = message.indexOf("exit") !== -1;
+            if (delet) {
+
+            } else {
+                send(id, message);
+            }
+        }
     });
     
     ws.on('close', function(reasonCode, description) {
-        //delete clients[id];
+        
     });
     
     console.log('new connection');
@@ -46,8 +90,6 @@ var send = function(id, message){
                 }
             });
     });
-
-    console.log(resposta);
 
     if (resposta == "erro") {
 

@@ -45,7 +45,9 @@
             <div class="container">
                 <input class="input-name" id="name-text" type="text" />
                 <form action="javascript:;" onsubmit="send(this)">
-                    <input autocomplete="off" class="input-msg" id="msg-text" onsubmit="send(this)" type="text" />&nbsp;</form>
+                    <input autocomplete="off" class="input-msg" id="msg-text" onsubmit="send(this)" type="text" />
+                    <input type="button" value="Enviar" onclick="send(this)">&nbsp;</form>
+                    <input type="button" value="Sair" onclick="exit()">
             </div>
         </footer>
         <p>
