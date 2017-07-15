@@ -3,14 +3,36 @@
     <head>
     	<meta charset="utf-8">
         <title>Splash in the Flow</title>
+		<!-- Latest compiled and minified CSS -->
+        <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" rel="stylesheet" />
+        <!-- Optional theme -->
+        <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" rel="stylesheet" />
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <!-- Latest compiled and minified JavaScript --><script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script><!-- Custom styles for this template -->
+        <link href="http://getbootstrap.com/examples/sticky-footer/sticky-footer.css" rel="stylesheet" />
+		<script type="text/javascript" src="register.js"></script>
         <script type="text/javascript" src="tela001.js"></script>
+		<style>
+		#centralizer {
+			width: 200px;
+			display: block;
+			margin: auto;
+		}
+		</style>
     </head>
     <body>
-        <div align=center>
+		<div class = "page-header" align="center">
             <h1>Splash in the Flow</h1>
-            <h2>Discussões em Andamento</h2>
         </div>
-        <div id="here" align="center"></div>
+		<div align="center">
+			<h2>Discussões em Andamento</h2><br>
+		</div>
+		<div id="centralizer">
+		<ul class="list-group">
+			<div id="here" align="center"></div>
+		</ul>
+		</div>
         <div id="new" align="center">
             <br><input type="button" value="Criar Discussão" onclick="createDiscussion()">
         </div>

@@ -26,7 +26,7 @@ wss.on('connection', function(ws) {
 
     ws.on('message', function(message) {
         var exist = message.indexOf("user") !== -1;
-        var delet = message.indexOf("exit") !== -1;
+        var delet = message.indexOf("logout") !== -1;
         var deletOlder = message.indexOf("exitOther") !== -1;
         var deletErro = message.indexOf("exitErro") !== -1;
 
@@ -34,7 +34,8 @@ wss.on('connection', function(ws) {
             var preIndex = message.indexOf("-");
             var fimIndex = message.length;
             var id = message.substring(preIndex+1, fimIndex);
-            connected = connected.replace(message.substring(6, message.length) + ", ", '');
+            connected = connected.replace(message.substring(8, message.length) + ", ", '');
+			console.log(connected);
             var isId = connected.indexOf(id) !== -1;
             if (isId) {
                 ws.send("deleted");
@@ -47,6 +48,7 @@ wss.on('connection', function(ws) {
             var fimIndex = message.length;
             var id = message.substring(preIndex+1, fimIndex);
             connected = connected.replace(message.substring(11, message.length) + ", ", '');
+			console.log(connected);
             var isId = connected.indexOf(id) !== -1;
             if (isId) {
             } else {
@@ -58,9 +60,11 @@ wss.on('connection', function(ws) {
             var fimIndex = message.length;
             var id = message.substring(preIndex+1, fimIndex);
             connected = connected.replace(message.substring(6, message.length) + ", ", '');
+			console.log(connected);
         }
         if (exist) {
             connected = connected + message.substring(6, message.length) + ", ";
+			console.log(connected);
         } else {
             var delet = message.indexOf("exit") !== -1;
             if (delet) {
@@ -85,7 +89,6 @@ var send = function(id, message){
             var client = clients[key];
             client.send(message, function(error){
                 if (error) {
-                    console.log("erro");
                     resposta = "erro";
                 }
             });

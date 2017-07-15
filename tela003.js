@@ -92,7 +92,7 @@ var connection = new WebSocket('ws://localhost:8081/testing');
 
     connection.onclose = function() {
 
-    	connection.send("exit: " + user + "-" + idC);
+    	connection.send("logout: " + user + "-" + idC);
 
     }
 
@@ -107,7 +107,7 @@ var connection = new WebSocket('ws://localhost:8081/testing');
         }
 
         if (server_message == "lastOld") {
-        	var exit = window.confirm("Você é o último integrante dessa discussão. Se você sair, ela será excluída. Deseja realmente sair?");
+        	var exit = window.confirm("Você é o último integrante dessa discussão. Deseja realmente sair?");
         	if (exit) {
         	
         	} else {
@@ -118,7 +118,7 @@ var connection = new WebSocket('ws://localhost:8081/testing');
 
         if (server_message == "last") {
 
-        	var exit = window.confirm("Você é o último integrante dessa discussão. Se você sair, ela será excluída. Deseja realmente sair?");
+        	var exit = window.confirm("Você é o último integrante dessa discussão. Deseja realmente sair?");
         	if (exit) {
         		console.log('Connection closed');
         		var url = "./index.html";
@@ -321,11 +321,14 @@ var source = new EventSource("http://localhost:9091");
             toSend = ("'" + title + "', topic: '" + topic + "' user: '" + userToSend + "';");
 
             var createAText = document.createTextNode(topic + " - " + title);
+			var listItem = document.createElement("li");
+			listItem.setAttribute('class', 'list-group-item');
             var newlink = document.createElement("a");
             newlink.setAttribute('href', './tela003.html?title=' + toSend + id + '-' + options + '[exit:'+idC+ "]");
             newlink.appendChild(createAText);
+			listItem.appendChild(newlink);
             var div = document.getElementById('discussion');
-            div.appendChild(newlink);
+            div.appendChild(listItem);
             document.getElementById('discussion').appendChild(document.createElement("br"));
 
             preIndex = atualString.indexOf(",");
@@ -336,5 +339,5 @@ var source = new EventSource("http://localhost:9091");
     }
 
 function exit() {
-	connection.send("exit: " + user + "-" + idC);
+	connection.send("logout: " + user + "-" + idC);
 }

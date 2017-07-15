@@ -126,11 +126,14 @@ function tratandoResposta (server_message) {
 		toSend = ("'" + title + "', topic: '" + topic + "' user: '" + userToSend + "';");
 
 		var createAText = document.createTextNode(topic + " - " + title);
+		var listItem = document.createElement("li");
+		listItem.setAttribute('class', 'list-group-item');
 		var newlink = document.createElement("a");
 		newlink.setAttribute('href', './tela003.html?title=' + toSend + id + '-' + options + '[');
 		newlink.appendChild(createAText);
+		listItem.appendChild(newlink);
 		var div = document.getElementById('here');
-		div.appendChild(newlink);
+		div.appendChild(listItem);
 		document.getElementById('here').appendChild(document.createElement("br"));
 
 		preIndex = atualString.indexOf(",");
